@@ -1,6 +1,13 @@
-# All personal data lives in data/ and is never committed
-data/*
-!data/README.md
+# Resume files (binary, user adds manually)
+data/resume/*
+!data/resume/README.md
+
+# Filled-in job application folders (generated content)
+data/jobs/*
+!data/jobs/README.md
+
+# Cron logs
+data/logs/
 
 # OS files
 .DS_Store
