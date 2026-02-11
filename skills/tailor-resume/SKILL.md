@@ -10,9 +10,9 @@ Create compelling, tailored resumes that make it obvious you're the right candid
 
 ## Quick Start
 
-- `/tailor-resume` - Start the flow (will check work history, then ask for a job URL)
-- `/tailor-resume interview` - Deep-dive interview to build your work history profile
-- `/tailor-resume https://...` - Tailor resume for a specific job posting
+- `/proficiently:tailor-resume` - Start the flow (will check work history, then ask for a job URL)
+- `/proficiently:tailor-resume interview` - Deep-dive interview to build your work history profile
+- `/proficiently:tailor-resume https://...` - Tailor resume for a specific job posting
 
 ## File Structure
 
@@ -27,7 +27,7 @@ assets/
 
 Shared data (all skills read/write here):
 ```
-../data/
+../../data/
   resume/                 # Source resume
   profile.md              # Work history from interview
   preferences.md          # Job preferences (for context)
@@ -44,15 +44,15 @@ Shared data (all skills read/write here):
 
 ### Step 0: Load Resume
 
-Read the candidate's resume from `../data/resume/*`.
+Read the candidate's resume from `../../data/resume/*`.
 
 If no resume is found, tell the user to either:
-- Place a resume in `../data/resume/`
-- Or run `/job-search setup`
+- Place a resume in `../../data/resume/`
+- Or run `/proficiently:job-search setup`
 
 ### Step 1: Assess Work History Completeness
 
-Check if `../data/profile.md` exists and is populated (not just the template).
+Check if `../../data/profile.md` exists and is populated (not just the template).
 
 **If no profile exists**, extract what you can from the resume and create an initial assessment:
 
@@ -119,7 +119,7 @@ Work through each role on the resume, starting with the most recent. For each ro
 
 **After the interview:**
 
-Save the comprehensive profile to `../data/profile.md` using the structure in `assets/templates/profile.md`. This profile should contain significantly MORE detail than would ever appear on a resume - it's the raw material for tailoring.
+Save the comprehensive profile to `../../data/profile.md` using the structure in `assets/templates/profile.md`. This profile should contain significantly MORE detail than would ever appear on a resume - it's the raw material for tailoring.
 
 ### Step 3: Get Job Details
 
@@ -144,7 +144,7 @@ Parse and extract:
 - **Team context** - who they report to, team size, cross-functional partners
 - **Company stage/size** indicators
 
-**Create a job folder** at `../data/jobs/[company-slug]-[date]/` and save the parsed job posting to `posting.md`.
+**Create a job folder** at `../../data/jobs/[company-slug]-[date]/` and save the parsed job posting to `posting.md`.
 
 If the page can't be loaded or parsed, ask the user to paste the job description directly.
 
@@ -204,7 +204,7 @@ Create the tailored resume following these principles:
 
 **Output:**
 
-Save the tailored resume to `../data/jobs/[company-slug]-[date]/resume.md`
+Save the tailored resume to `../../data/jobs/[company-slug]-[date]/resume.md`
 
 Present the resume to the user with a brief explanation:
 

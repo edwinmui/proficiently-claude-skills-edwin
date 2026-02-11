@@ -10,9 +10,9 @@ Write natural, persuasive cover letters that sound like a real professional wrot
 
 ## Quick Start
 
-- `/cover-letter` - Start the flow (will ask for a job URL)
-- `/cover-letter https://...` - Write a cover letter for a specific job posting
-- `/cover-letter last` - Write a cover letter for the most recent job in data/jobs/
+- `/proficiently:cover-letter` - Start the flow (will ask for a job URL)
+- `/proficiently:cover-letter https://...` - Write a cover letter for a specific job posting
+- `/proficiently:cover-letter last` - Write a cover letter for the most recent job in data/jobs/
 
 ## File Structure
 
@@ -23,7 +23,7 @@ scripts/
 
 Shared data (all skills read/write here):
 ```
-../data/
+../../data/
   resume/                     # Source resume
   profile.md                  # Work history from interview
   jobs/                       # Per-job application folders
@@ -40,22 +40,22 @@ Shared data (all skills read/write here):
 ### Step 0: Load Context
 
 Read:
-- `../data/resume/*` (original resume)
-- `../data/profile.md` (work history, if it exists)
+- `../../data/resume/*` (original resume)
+- `../../data/profile.md` (work history, if it exists)
 
-If no resume found, tell user to run `/job-search setup`.
-If no work history profile, warn that the cover letter will be based only on the resume (recommend running `/tailor-resume interview` first for better results).
+If no resume found, tell user to run `/proficiently:job-search setup`.
+If no work history profile, warn that the cover letter will be based only on the resume (recommend running `/proficiently:tailor-resume interview` first for better results).
 
 ### Step 1: Get Job Details
 
 **If `$ARGUMENTS` is "last" or empty:**
-- Check `../data/jobs/` for the most recently modified folder
+- Check `../../data/jobs/` for the most recently modified folder
 - If found, read `posting.md` and `resume.md` from that folder
 - Confirm with the user which job this is for
 - If no job folders exist, ask the user for a job URL
 
 **If `$ARGUMENTS` is a URL:**
-- Check if a job folder already exists for this company in `../data/jobs/`
+- Check if a job folder already exists for this company in `../../data/jobs/`
 - If yes, read the existing `posting.md` and `resume.md`
 - If no, use Claude in Chrome MCP tools to fetch the job posting:
   ```
@@ -64,7 +64,7 @@ If no work history profile, warn that the cover letter will be based only on the
   3. navigate -> job URL
   4. get_page_text -> extract full job posting
   ```
-- Save the posting to `../data/jobs/[company-slug]-[date]/posting.md` if not already saved
+- Save the posting to `../../data/jobs/[company-slug]-[date]/posting.md` if not already saved
 
 If the page can't be loaded, ask the user to paste the job description directly.
 
@@ -94,7 +94,7 @@ The cover letter must:
 
 ### Step 4: Present and Save
 
-Save to `../data/jobs/[company-slug]-[date]/cover-letter.md`
+Save to `../../data/jobs/[company-slug]-[date]/cover-letter.md`
 
 Present the cover letter to the user with:
 - The full text

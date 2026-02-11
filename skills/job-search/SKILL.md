@@ -10,9 +10,9 @@ Automated daily job search using browser automation.
 
 ## Quick Start
 
-- `/job-search` - Run daily search with default terms from matching rules
-- `/job-search setup` - Configure preferences, resume, and cron schedule
-- `/job-search AI infrastructure` - Search with specific keywords
+- `/proficiently:job-search` - Run daily search with default terms from matching rules
+- `/proficiently:job-search setup` - Configure preferences, resume, and cron schedule
+- `/proficiently:job-search AI infrastructure` - Search with specific keywords
 
 ## File Structure
 
@@ -25,7 +25,7 @@ assets/
 
 Shared data (all skills read/write here):
 ```
-../data/
+../../data/
   resume/              # Your resume (gitignored)
   preferences.md       # Your job preferences (gitignored)
   job-history.md       # Running log of all jobs (gitignored)
@@ -39,29 +39,29 @@ Shared data (all skills read/write here):
 
 ### Step 0: Setup Check
 
-If `$ARGUMENTS` equals "setup" OR if `../data/preferences.md` does not exist or contains only template placeholders:
+If `$ARGUMENTS` equals "setup" OR if `../../data/preferences.md` does not exist or contains only template placeholders:
 
-1. **Resume**: Check `../data/resume/` for resume files
+1. **Resume**: Check `../../data/resume/` for resume files
    - If missing, ask user to provide path or paste content
-   - Save to `../data/resume/`
+   - Save to `../../data/resume/`
 
 2. **Preferences**: Ask user to fill in matching rules:
    - Target job titles
    - Must-have criteria (location, salary minimum)
    - Dealbreakers (agencies, crypto, travel, etc.)
-   - Save to `../data/preferences.md`
+   - Save to `../../data/preferences.md`
 
 3. **Automation**: Ask if user wants daily cron job
-   - If yes, configure: `0 9 * * * claude -p "/job-search"`
+   - If yes, configure: `0 9 * * * claude -p "/proficiently:job-search"`
 
 Skip to Step 1 if setup is complete.
 
 ### Step 1: Load Context
 
 Read these files:
-- `../data/resume/*` (candidate profile)
-- `../data/preferences.md` (preferences)
-- `../data/job-history.md` (to avoid duplicates)
+- `../../data/resume/*` (candidate profile)
+- `../../data/preferences.md` (preferences)
+- `../../data/job-history.md` (to avoid duplicates)
 
 Extract search terms from:
 1. `$ARGUMENTS` if provided
@@ -93,7 +93,7 @@ The subagent returns scored jobs with fit ratings (High/Medium/Low/Skip).
 
 ### Step 4: Save History
 
-Append ALL jobs to `../data/job-history.md` using format from `assets/templates/job-entry.md`:
+Append ALL jobs to `../../data/job-history.md` using format from `assets/templates/job-entry.md`:
 
 ```markdown
 ## [DATE] - Search: "[terms]"
@@ -120,7 +120,7 @@ Show only NEW High/Medium fits not in previous history:
 
 ### Step 6: Learn from Feedback
 
-If user provides feedback, update `../data/preferences.md`:
+If user provides feedback, update `../../data/preferences.md`:
 - "No agencies" → add to dealbreakers
 - "Prefer AI companies" → add to nice-to-haves
 - "Minimum $350k" → update salary threshold

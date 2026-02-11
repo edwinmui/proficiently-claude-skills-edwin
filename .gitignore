@@ -9,6 +9,13 @@ data/jobs/*
 # Cron logs
 data/logs/
 
+# Legacy asset data (from before shared data/ directory)
+skills/job-search/assets/job-history.md
+skills/job-search/assets/matching-rules.md
+skills/job-search/assets/resume/
+skills/job-search/logs/
+skills/cover-letter/assets/cover-letters/
+
 # OS files
 .DS_Store
 
