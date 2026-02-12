@@ -22,14 +22,14 @@ assets/
   templates/           # Format templates (committed)
 ```
 
-Shared data (all skills read/write here):
+User data (stored at ~/.proficiently/):
 ```
-../../data/
-  resume/              # Your resume (gitignored)
-  preferences.md       # Your job preferences (gitignored)
-  job-history.md       # Running log of all jobs (gitignored)
-  profile.md           # Work history from interview (gitignored)
-  jobs/                # Per-job application folders (gitignored)
+~/.proficiently/
+  resume/              # Your resume PDF/DOCX
+  preferences.md       # Job matching rules
+  profile.md           # Work history from interview
+  jobs/                # Per-job application folders
+  job-history.md       # Running log from job-search
 ```
 
 ---
@@ -39,17 +39,17 @@ Shared data (all skills read/write here):
 ### Step 0: Check Prerequisites
 
 Check that the required data files exist:
-- `../../data/resume/*` - at least one resume file (besides README.md)
-- `../../data/preferences.md` - populated with real content (not just a template)
+- `~/.proficiently/resume/*` - at least one resume file (besides README.md)
+- `~/.proficiently/preferences.md` - populated with real content (not just a template)
 
 If either is missing, tell the user: "Run `/proficiently:setup` first to configure your resume and preferences." Then stop.
 
 ### Step 1: Load Context
 
 Read these files:
-- `../../data/resume/*` (candidate profile)
-- `../../data/preferences.md` (preferences)
-- `../../data/job-history.md` (to avoid duplicates)
+- `~/.proficiently/resume/*` (candidate profile)
+- `~/.proficiently/preferences.md` (preferences)
+- `~/.proficiently/job-history.md` (to avoid duplicates)
 
 Extract search terms from:
 1. `$ARGUMENTS` if provided
@@ -81,7 +81,7 @@ The subagent returns scored jobs with fit ratings (High/Medium/Low/Skip).
 
 ### Step 4: Save History
 
-Append ALL jobs to `../../data/job-history.md` using format from `assets/templates/job-entry.md`:
+Append ALL jobs to `~/.proficiently/job-history.md` using format from `assets/templates/job-entry.md`:
 
 ```markdown
 ## [DATE] - Search: "[terms]"
@@ -96,7 +96,7 @@ Append ALL jobs to `../../data/job-history.md` using format from `assets/templat
 For each High-fit job, try to find and save the actual job posting:
 1. Search the company's careers page directly (e.g., `careers.company.com` or `company.com/careers`)
 2. Navigate to the specific listing and extract the full posting
-3. Save to `../../data/jobs/[company-slug]-[date]/posting.md`
+3. Save to `~/.proficiently/jobs/[company-slug]-[date]/posting.md`
 
 This ensures the posting is saved locally even if the original search link breaks later. Include:
 - The company's direct careers page URL (not the aggregator link)
@@ -129,7 +129,7 @@ After presenting results, tell the user:
 
 ### Step 8: Learn from Feedback
 
-If user provides feedback, update `../../data/preferences.md`:
+If user provides feedback, update `~/.proficiently/preferences.md`:
 - "No agencies" → add to dealbreakers
 - "Prefer AI companies" → add to nice-to-haves
 - "Minimum $350k" → update salary threshold
@@ -145,8 +145,9 @@ Add to `~/.claude/settings.json`:
   "permissions": {
     "allow": [
       "Read(~/.claude/skills/**)",
-      "Write(~/.claude/skills/data/**)",
-      "Edit(~/.claude/skills/data/**)",
+      "Read(~/.proficiently/**)",
+      "Write(~/.proficiently/**)",
+      "Edit(~/.proficiently/**)",
       "Bash(crontab *)",
       "mcp__claude-in-chrome__*"
     ]

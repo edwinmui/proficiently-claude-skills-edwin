@@ -23,17 +23,14 @@ assets/
     profile.md            # Template for work history profile
 ```
 
-Shared data (all skills read/write here):
+User data (stored at ~/.proficiently/):
 ```
-../../data/
-  resume/                 # Source resume
-  profile.md              # Work history from interview
-  preferences.md          # Job preferences (for context)
-  jobs/                   # Per-job application folders
-    [company-slug]/
-      posting.md          # Saved job description
-      resume.md           # Tailored resume
-      cover-letter.md     # Cover letter (from cover-letter skill)
+~/.proficiently/
+  resume/              # Your resume PDF/DOCX
+  preferences.md       # Job matching rules
+  profile.md           # Work history from interview
+  jobs/                # Per-job application folders
+  job-history.md       # Running log from job-search
 ```
 
 ---
@@ -43,8 +40,8 @@ Shared data (all skills read/write here):
 ### Step 0: Check Prerequisites
 
 Check that the required data files exist:
-- `../../data/resume/*` - at least one resume file (besides README.md)
-- `../../data/profile.md` - populated with real content (not just a template)
+- `~/.proficiently/resume/*` - at least one resume file (besides README.md)
+- `~/.proficiently/profile.md` - populated with real content (not just a template)
 
 If the resume is missing, tell the user: "Run `/proficiently:setup` first." Then stop.
 
@@ -87,7 +84,7 @@ Parse and extract:
 - **Team context** - who they report to, team size, cross-functional partners
 - **Company stage/size** indicators
 
-**Create a job folder** at `../../data/jobs/[company-slug]-[date]/` and save the parsed job posting to `posting.md`.
+**Create a job folder** at `~/.proficiently/jobs/[company-slug]-[date]/` and save the parsed job posting to `posting.md`.
 
 If the page can't be loaded or parsed, ask the user to paste the job description directly.
 
@@ -157,7 +154,7 @@ Create the tailored resume following these principles:
 
 **Output:**
 
-Save the tailored resume to `../../data/jobs/[company-slug]-[date]/resume.md`
+Save the tailored resume to `~/.proficiently/jobs/[company-slug]-[date]/resume.md`
 
 Present the resume to the user with a brief explanation:
 
@@ -171,7 +168,7 @@ Here's your tailored resume for [Role] at [Company].
 
 **The narrative:** [2-3 sentence pitch for why you're the right person]
 
-The resume is saved to: data/jobs/[folder]/resume.md
+The resume is saved to: ~/.proficiently/jobs/[folder]/resume.md
 ```
 
 ### Step 3a: Verify Assumptions (if no profile exists)
@@ -188,7 +185,7 @@ any that are wrong:
 ...
 ```
 
-Wait for the user to verify or correct before finalizing. Apply all corrections to the resume AND save them to `../../data/profile.md` so they persist.
+Wait for the user to verify or correct before finalizing. Apply all corrections to the resume AND save them to `~/.proficiently/profile.md` so they persist.
 
 ### Step 4: Iterate
 
@@ -202,7 +199,7 @@ Apply changes and re-save.
 
 ### Step 5: Update Profile (ALWAYS)
 
-**Every time the user corrects a factual detail**, update `../../data/profile.md` immediately:
+**Every time the user corrects a factual detail**, update `~/.proficiently/profile.md` immediately:
 - Business model corrections (e.g., "Proficiently is B2C, not B2B")
 - Scope corrections (e.g., "I had revenue targets, not P&L ownership")
 - Responsibility corrections (e.g., "I didn't manage candidate workflows")
@@ -221,8 +218,9 @@ Add to `~/.claude/settings.json`:
   "permissions": {
     "allow": [
       "Read(~/.claude/skills/**)",
-      "Write(~/.claude/skills/data/**)",
-      "Edit(~/.claude/skills/data/**)",
+      "Read(~/.proficiently/**)",
+      "Write(~/.proficiently/**)",
+      "Edit(~/.proficiently/**)",
       "mcp__claude-in-chrome__*"
     ]
   }

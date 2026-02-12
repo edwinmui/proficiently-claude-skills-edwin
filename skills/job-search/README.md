@@ -24,34 +24,7 @@ An automated job search skill that uses browser automation to find and evaluate 
 git clone https://github.com/YOUR_USERNAME/job-search-skill.git ~/.claude/skills/job-search
 ```
 
-### 2. Add your resume
-
-Place your resume (PDF, DOCX, or TXT) in the assets folder:
-```bash
-cp /path/to/your/resume.pdf ~/.claude/skills/job-search/assets/resume/
-```
-
-Or run `/proficiently:setup` and it will prompt you.
-
-### 3. Configure permissions
-
-Add to `~/.claude/settings.json`:
-
-```json
-{
-  "permissions": {
-    "allow": [
-      "Read(~/.claude/skills/job-search/**)",
-      "Write(~/.claude/skills/job-search/assets/**)",
-      "Edit(~/.claude/skills/job-search/assets/**)",
-      "Bash(crontab *)",
-      "mcp__claude-in-chrome__*"
-    ]
-  }
-}
-```
-
-### 4. Run setup
+### 2. Run setup
 
 ```bash
 claude "/proficiently:setup"
@@ -79,28 +52,30 @@ claude -p "/job-search"
 
 ## File Structure
 
+**Plugin files:**
 ```
-~/.claude/skills/job-search/
+job-search/
 ├── SKILL.md                      # Main skill definition
 ├── README.md                     # This file
-├── .gitignore                    # Excludes personal data
 ├── assets/
-│   ├── resume/                   # Your resume (gitignored)
-│   ├── matching-rules.md         # Your preferences (gitignored)
-│   ├── job-history.md            # Log of all jobs found (gitignored)
-│   └── templates/                # Templates for new users (committed)
-│       ├── job-entry.md          # Format for history entries
-│       ├── job-history-init.md   # Fresh job history
-│       └── matching-rules.md     # Blank preferences template
-├── scripts/
-│   └── evaluate-jobs.md          # Job evaluation subagent
-└── logs/
-    └── cron.log                  # Output from automated runs (gitignored)
+│   └── templates/                # Format templates (committed)
+│       └── job-entry.md          # Format for history entries
+└── scripts/
+    └── evaluate-jobs.md          # Job evaluation subagent
+```
+
+**User data (at `~/.proficiently/`):**
+```
+~/.proficiently/
+├── resume/                       # Your resume PDF/DOCX
+├── preferences.md                # Job matching rules
+├── job-history.md                # Log of all jobs found
+└── jobs/                         # Per-job application folders
 ```
 
 ## Configuration
 
-### Matching Rules (`assets/matching-rules.md`)
+### Matching Rules (`~/.proficiently/preferences.md`)
 
 Customize your job preferences:
 
@@ -132,11 +107,11 @@ Just tell Claude what you want:
 - *"I don't want any roles requiring relocation"*
 - *"Bump my minimum salary to $300k"*
 
-The skill will update `matching-rules.md` automatically.
+The skill will update `~/.proficiently/preferences.md` automatically.
 
 ## Job History
 
-All jobs found are logged to `assets/job-history.md` with:
+All jobs found are logged to `~/.proficiently/job-history.md` with:
 - Date and search terms
 - Job details (title, company, location, salary)
 - Fit score (High/Medium/Low/Skip)

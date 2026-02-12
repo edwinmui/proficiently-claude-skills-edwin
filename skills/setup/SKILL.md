@@ -18,27 +18,43 @@ One-time onboarding that ensures all your data is in place before using the othe
 ```
 scripts/
   interview.md            # Deep-dive interview subagent prompt
+assets/
+  templates/
+    profile.md            # Template for work history profile
 ```
 
-Shared data (all skills read/write here):
+User data (stored at ~/.proficiently/):
 ```
-../../data/
-  resume/                 # Your resume PDF/DOCX
-  preferences.md          # Job matching rules
-  profile.md              # Work history from interview
+~/.proficiently/
+  resume/              # Your resume PDF/DOCX
+  preferences.md       # Job matching rules
+  profile.md           # Work history from interview
+  jobs/                # Per-job application folders
+  job-history.md       # Running log from job-search
 ```
 
 ---
 
 ## Workflow
 
-### Step 0: Check What's Already Done
+### Step 0: Initialize Data Directory & Check What's Already Done
 
-Check the state of these three data files and determine which phases to run:
+If `~/.proficiently/` doesn't exist, create the directory structure:
 
-1. **Resume**: Does `../../data/resume/` contain any files (besides README.md)?
-2. **Preferences**: Does `../../data/preferences.md` exist and contain real content (not just a template or placeholder)?
-3. **Profile**: Does `../../data/profile.md` exist and contain real content (not just a template)?
+```bash
+mkdir -p ~/.proficiently/resume ~/.proficiently/jobs
+```
+
+Also ensure the following files exist (create empty ones from templates if missing):
+- `~/.proficiently/preferences.md` — copy from `assets/templates/profile.md` pattern, or create empty
+- `~/.proficiently/profile.md` — create empty
+- `~/.proficiently/job-history.md` — create with header: `# Job Search History\n\n---\n`
+
+Then check the state of these three data files and determine which phases to run:
+
+1. **Resume**: Does `~/.proficiently/resume/` contain any files (besides README.md)?
+2. **Preferences**: Does `~/.proficiently/preferences.md` exist and contain real content (not just a template or placeholder)?
+3. **Profile**: Does `~/.proficiently/profile.md` exist and contain real content (not just a template)?
 
 If `$ARGUMENTS` is "interview", skip directly to Step 3 (but still check that a resume exists first).
 
@@ -51,11 +67,11 @@ Otherwise, run only the phases that are missing, in order.
 
 ### Step 1: Resume
 
-If `../../data/resume/` is empty (or only contains README.md):
+If `~/.proficiently/resume/` is empty (or only contains README.md):
 
 Ask the user to provide their resume. Accept either:
-- A file path (copy it into `../../data/resume/`)
-- Pasted text (save as `../../data/resume/resume.md`)
+- A file path (copy it into `~/.proficiently/resume/`)
+- Pasted text (save as `~/.proficiently/resume/resume.md`)
 
 Confirm the resume was saved and briefly summarize what you see (name, most recent role, number of roles listed).
 
@@ -63,7 +79,7 @@ If the resume already exists, skip this step and say so.
 
 ### Step 2: Preferences
 
-If `../../data/preferences.md` doesn't exist or contains only template/placeholder content:
+If `~/.proficiently/preferences.md` doesn't exist or contains only template/placeholder content:
 
 Ask the user about their job search preferences:
 
@@ -73,7 +89,7 @@ Ask the user about their job search preferences:
 4. **Must-haves** - Any non-negotiable requirements? (company stage, industry, team size, etc.)
 5. **Dealbreakers** - What should we always filter out? (agencies, crypto, travel requirements, specific industries, etc.)
 
-Save to `../../data/preferences.md` in this format:
+Save to `~/.proficiently/preferences.md` in this format:
 
 ```markdown
 # Job Preferences
@@ -107,7 +123,7 @@ If preferences already exist, skip this step and say so.
 
 ### Step 3: Work History Interview
 
-If `../../data/profile.md` doesn't exist or contains only template/placeholder content:
+If `~/.proficiently/profile.md` doesn't exist or contains only template/placeholder content:
 
 Conduct a thorough, conversational interview to build a comprehensive work history profile. Reference `scripts/interview.md` for the full interview framework.
 
@@ -141,7 +157,7 @@ Work through each role on the resume, starting with the most recent. For each ro
 
 **After the interview:**
 
-Save the comprehensive profile to `../../data/profile.md` using the structure from the tailor-resume template at `../tailor-resume/assets/templates/profile.md`. This profile should contain significantly MORE detail than would ever appear on a resume - it's the raw material for tailoring.
+Save the comprehensive profile to `~/.proficiently/profile.md` using the structure from the template at `assets/templates/profile.md`. This profile should contain significantly MORE detail than would ever appear on a resume - it's the raw material for tailoring.
 
 If the profile already exists, skip this step and say so.
 
@@ -152,7 +168,7 @@ After all phases are complete, give the user a brief summary of what's set up:
 ```
 You're all set! Here's what we have:
 
-- Resume: [filename] in data/resume/
+- Resume: [filename] in ~/.proficiently/resume/
 - Preferences: [summary of target roles and key criteria]
 - Work History Profile: [number of roles covered, completeness note]
 
@@ -173,8 +189,9 @@ Add to `~/.claude/settings.json`:
   "permissions": {
     "allow": [
       "Read(~/.claude/skills/**)",
-      "Write(~/.claude/skills/data/**)",
-      "Edit(~/.claude/skills/data/**)"
+      "Write(~/.proficiently/**)",
+      "Edit(~/.proficiently/**)",
+      "Bash(mkdir *)"
     ]
   }
 }

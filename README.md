@@ -18,7 +18,7 @@ A Claude Code plugin for AI-powered job searching, resume tailoring, and cover l
 3. **`/proficiently:tailor-resume`** rewrites your resume for a specific job posting, saves the job posting and tailored resume together
 4. **`/proficiently:cover-letter last`** writes a cover letter using the most recent job's posting and tailored resume
 
-All skills share a `data/` directory for personal files. Each job application gets its own folder containing the posting, tailored resume, and cover letter.
+All skills share a `~/.proficiently/` directory for personal files. Each job application gets its own folder containing the posting, tailored resume, and cover letter.
 
 ## Installation
 
@@ -28,21 +28,20 @@ All skills share a `data/` directory for personal files. Each job application ge
 claude plugin add https://github.com/proficientlyjobs/proficiently-claude-skills.git
 ```
 
-### 2. Add your resume
-
-Copy your resume into the plugin's data directory:
-
-```bash
-cp /path/to/your/resume.pdf "$(claude plugin path proficiently)/data/resume/"
-```
-
-### 3. Run setup
+### 2. Run setup
 
 ```
 /proficiently:setup
 ```
 
-This will verify your resume, configure your job preferences, and conduct a work history interview.
+This will create `~/.proficiently/`, prompt you for your resume, configure your job preferences, and conduct a work history interview.
+
+You can also add your resume manually first:
+
+```bash
+mkdir -p ~/.proficiently/resume
+cp /path/to/your/resume.pdf ~/.proficiently/resume/
+```
 
 ## Prerequisites
 
@@ -52,6 +51,7 @@ This will verify your resume, configure your job preferences, and conduct a work
 
 ## File Structure
 
+**Plugin (installed via `claude plugin add`):**
 ```
 proficiently-claude-skills/
 ├── .claude-plugin/
@@ -59,6 +59,7 @@ proficiently-claude-skills/
 ├── skills/
 │   ├── setup/
 │   │   ├── SKILL.md
+│   │   ├── assets/templates/
 │   │   └── scripts/
 │   ├── job-search/
 │   │   ├── SKILL.md
@@ -71,21 +72,23 @@ proficiently-claude-skills/
 │   └── cover-letter/
 │       ├── SKILL.md
 │       └── scripts/
-├── data/                               # All personal data (gitignored)
-│   ├── resume/                         # Your resume PDF/DOCX
-│   ├── profile.md                      # Work history from interview
-│   ├── preferences.md                  # Job matching rules
-│   ├── job-history.md                  # Running log from job-search
-│   └── jobs/                           # One folder per application
-│       ├── google-lead-gpm-2026-02-11/
-│       │   ├── posting.md              # Saved job description
-│       │   ├── resume.md               # Tailored resume
-│       │   └── cover-letter.md         # Cover letter
-│       └── ...
 └── README.md
 ```
 
-All personal data (resume, preferences, generated documents) is gitignored and stays local.
+**User data (created by `/proficiently:setup`, persists across plugin updates):**
+```
+~/.proficiently/
+├── resume/                             # Your resume PDF/DOCX
+├── profile.md                          # Work history from interview
+├── preferences.md                      # Job matching rules
+├── job-history.md                      # Running log from job-search
+└── jobs/                               # One folder per application
+    ├── google-lead-gpm-2026-02-11/
+    │   ├── posting.md                  # Saved job description
+    │   ├── resume.md                   # Tailored resume
+    │   └── cover-letter.md             # Cover letter
+    └── ...
+```
 
 ## License
 

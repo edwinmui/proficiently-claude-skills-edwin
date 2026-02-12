@@ -12,7 +12,7 @@ Write natural, persuasive cover letters that sound like a real professional wrot
 
 - `/proficiently:cover-letter` - Start the flow (will ask for a job URL)
 - `/proficiently:cover-letter https://...` - Write a cover letter for a specific job posting
-- `/proficiently:cover-letter last` - Write a cover letter for the most recent job in data/jobs/
+- `/proficiently:cover-letter last` - Write a cover letter for the most recent job
 
 ## File Structure
 
@@ -21,16 +21,14 @@ scripts/
   write-cover-letter.md       # Cover letter writing agent prompt
 ```
 
-Shared data (all skills read/write here):
+User data (stored at ~/.proficiently/):
 ```
-../../data/
-  resume/                     # Source resume
-  profile.md                  # Work history from interview
-  jobs/                       # Per-job application folders
-    [company-slug]/
-      posting.md              # Saved job description
-      resume.md               # Tailored resume (from tailor-resume skill)
-      cover-letter.md         # Cover letter (written by this skill)
+~/.proficiently/
+  resume/              # Your resume PDF/DOCX
+  preferences.md       # Job matching rules
+  profile.md           # Work history from interview
+  jobs/                # Per-job application folders
+  job-history.md       # Running log from job-search
 ```
 
 ---
@@ -40,22 +38,22 @@ Shared data (all skills read/write here):
 ### Step 0: Check Prerequisites
 
 Check that the required data files exist:
-- `../../data/resume/*` - at least one resume file (besides README.md)
+- `~/.proficiently/resume/*` - at least one resume file (besides README.md)
 
 If the resume is missing, tell the user: "Run `/proficiently:setup` first." Then stop.
 
-Check `../../data/profile.md` - if missing or just a template, warn that the cover letter will be based only on the resume (recommend running `/proficiently:setup interview` first for better results), but proceed.
+Check `~/.proficiently/profile.md` - if missing or just a template, warn that the cover letter will be based only on the resume (recommend running `/proficiently:setup interview` first for better results), but proceed.
 
 ### Step 1: Get Job Details
 
 **If `$ARGUMENTS` is "last" or empty:**
-- Check `../../data/jobs/` for the most recently modified folder
+- Check `~/.proficiently/jobs/` for the most recently modified folder
 - If found, read `posting.md` and `resume.md` from that folder
 - Confirm with the user which job this is for
 - If no job folders exist, ask the user for a job URL
 
 **If `$ARGUMENTS` is a URL:**
-- Check if a job folder already exists for this company in `../../data/jobs/`
+- Check if a job folder already exists for this company in `~/.proficiently/jobs/`
 - If yes, read the existing `posting.md` and `resume.md`
 - If no, use Claude in Chrome MCP tools to fetch the job posting:
   ```
@@ -64,7 +62,7 @@ Check `../../data/profile.md` - if missing or just a template, warn that the cov
   3. navigate -> job URL
   4. get_page_text -> extract full job posting
   ```
-- Save the posting to `../../data/jobs/[company-slug]-[date]/posting.md` if not already saved
+- Save the posting to `~/.proficiently/jobs/[company-slug]-[date]/posting.md` if not already saved
 
 If the page can't be loaded, ask the user to paste the job description directly.
 
@@ -94,7 +92,7 @@ The cover letter must:
 
 ### Step 4: Present and Save
 
-Save to `../../data/jobs/[company-slug]-[date]/cover-letter.md`
+Save to `~/.proficiently/jobs/[company-slug]-[date]/cover-letter.md`
 
 Present the cover letter to the user with:
 - The full text
@@ -122,8 +120,9 @@ Add to `~/.claude/settings.json`:
   "permissions": {
     "allow": [
       "Read(~/.claude/skills/**)",
-      "Write(~/.claude/skills/data/**)",
-      "Edit(~/.claude/skills/data/**)",
+      "Read(~/.proficiently/**)",
+      "Write(~/.proficiently/**)",
+      "Edit(~/.proficiently/**)",
       "mcp__claude-in-chrome__*"
     ]
   }

@@ -15,27 +15,6 @@ Create tailored resumes that make you the obvious candidate for any specific job
 2. [Claude in Chrome](https://chromewebstore.google.com/detail/claude-in-chrome) extension installed
 3. Resume and profile set up via `/proficiently:setup`
 
-## Setup
-
-### 1. Configure permissions
-
-Add to `~/.claude/settings.json`:
-
-```json
-{
-  "permissions": {
-    "allow": [
-      "Read(~/.claude/skills/tailor-resume/**)",
-      "Write(~/.claude/skills/tailor-resume/assets/**)",
-      "Edit(~/.claude/skills/tailor-resume/assets/**)",
-      "Read(~/.claude/skills/job-search/assets/resume/**)",
-      "Read(~/.claude/skills/job-search/assets/matching-rules.md)",
-      "mcp__claude-in-chrome__*"
-    ]
-  }
-}
-```
-
 ## Usage
 
 ### Tailor resume for a job
@@ -54,8 +33,9 @@ This will check prerequisites, then ask for a job URL.
 
 ## File Structure
 
+**Plugin files:**
 ```
-~/.claude/skills/tailor-resume/
+tailor-resume/
 ├── SKILL.md                          # Main skill definition
 ├── README.md                         # This file
 ├── assets/
@@ -63,6 +43,18 @@ This will check prerequisites, then ask for a job URL.
 │       └── profile.md                # Work history template (committed)
 └── scripts/
     └── tailor.md                     # Tailoring agent prompt
+```
+
+**User data (at `~/.proficiently/`):**
+```
+~/.proficiently/
+├── resume/                           # Your resume PDF/DOCX
+├── profile.md                        # Work history from interview
+├── preferences.md                    # Job preferences (for context)
+└── jobs/
+    └── [company-slug]/
+        ├── posting.md                # Saved job description
+        └── resume.md                 # Tailored resume
 ```
 
 ## How It Works

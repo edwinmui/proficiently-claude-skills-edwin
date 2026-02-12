@@ -1,15 +1,4 @@
-# Resume files (binary, user adds manually)
-data/resume/*
-!data/resume/README.md
-
-# Filled-in job application folders (generated content)
-data/jobs/*
-!data/jobs/README.md
-
-# Cron logs
-data/logs/
-
-# Legacy asset data (from before shared data/ directory)
+# Legacy asset data (from before shared data directory)
 skills/job-search/assets/job-history.md
 skills/job-search/assets/matching-rules.md
 skills/job-search/assets/resume/

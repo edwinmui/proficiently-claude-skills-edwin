@@ -1,8 +1,6 @@
 # Work History Profile
 
-Comprehensive work history built from a `/proficiently:setup interview` session.
-This is the raw material for tailoring resumes and writing cover letters.
-The interview takes about 15-20 minutes and only needs to happen once.
+Comprehensive work history compiled from resume + interview. This is the raw material for tailoring resumes.
 
 *Last updated: [DATE]*
 
@@ -59,7 +57,7 @@ The interview takes about 15-20 minutes and only needs to happen once.
 
 ---
 
-*Repeat the Role section above for each role on the resume*
+*Repeat for each role*
 
 ---
 
@@ -68,16 +66,17 @@ The interview takes about 15-20 minutes and only needs to happen once.
 **Recurring themes**: [What patterns appear across roles?]
 **Superpower**: [What does this person do better than most?]
 **Growth trajectory**: [How has their career evolved?]
-**Best-fit environments**: [Where do they thrive?]
+**Best-fit environments**: [Where do they thrive? What conditions bring out their best work?]
 
 ## Notable Quotes
 
 Capture the candidate's own words for compelling resume bullets:
 - "[Direct quote about an accomplishment]" (re: [Company/Role])
+- "[Direct quote about approach]" (re: [Company/Role])
 
 ## Metrics Bank
 
 Quick reference for all quantified achievements:
 | Metric | Value | Context | Role |
 |--------|-------|---------|------|
-| [e.g., Revenue growth] | [e.g., $50M to $200M] | [e.g., 3 years] | [Company] |
+| [e.g., Revenue growth] | [e.g., $50M → $200M] | [e.g., 3 years] | [Company] |
