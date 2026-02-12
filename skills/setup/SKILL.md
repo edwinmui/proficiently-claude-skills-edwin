@@ -16,8 +16,6 @@ One-time onboarding that ensures all your data is in place before using the othe
 ## File Structure
 
 ```
-scripts/
-  interview.md            # Deep-dive interview subagent prompt
 assets/
   templates/
     profile.md            # Template for work history profile
@@ -37,140 +35,109 @@ User data (stored at ~/.proficiently/):
 
 ## Workflow
 
-### Step 0: Initialize Data Directory & Check What's Already Done
+### Step 0: Check What's Already Done
 
-If `~/.proficiently/` doesn't exist, create the directory structure:
+Check which of these exist and have real content (not just templates):
+1. `~/.proficiently/resume/` — any files?
+2. `~/.proficiently/preferences.md` — real content?
+3. `~/.proficiently/profile.md` — real content?
 
-```bash
-mkdir -p ~/.proficiently/resume ~/.proficiently/jobs
-```
+If `$ARGUMENTS` is "interview", skip to Step 3 (but check that a resume exists first).
 
-Also ensure the following files exist (create empty ones from templates if missing):
-- `~/.proficiently/preferences.md` — copy from `assets/templates/profile.md` pattern, or create empty
-- `~/.proficiently/profile.md` — create empty
-- `~/.proficiently/job-history.md` — create with header: `# Job Search History\n\n---\n`
-
-Then check the state of these three data files and determine which phases to run:
-
-1. **Resume**: Does `~/.proficiently/resume/` contain any files (besides README.md)?
-2. **Preferences**: Does `~/.proficiently/preferences.md` exist and contain real content (not just a template or placeholder)?
-3. **Profile**: Does `~/.proficiently/profile.md` exist and contain real content (not just a template)?
-
-If `$ARGUMENTS` is "interview", skip directly to Step 3 (but still check that a resume exists first).
-
-If everything is already set up, tell the user they're good to go and remind them of the available skills:
-- `/proficiently:job-search` to find jobs
-- `/proficiently:tailor-resume` to tailor a resume
-- `/proficiently:cover-letter` to write a cover letter
-
-Otherwise, run only the phases that are missing, in order.
+If everything exists, tell the user they're good to go and list the available skills. Otherwise, run only the missing phases in order.
 
 ### Step 1: Resume
 
-If `~/.proficiently/resume/` is empty (or only contains README.md):
-
-Ask the user to provide their resume. Accept either:
+Ask the user to provide their resume. Accept:
 - A file path (copy it into `~/.proficiently/resume/`)
 - Pasted text (save as `~/.proficiently/resume/resume.md`)
 
-Confirm the resume was saved and briefly summarize what you see (name, most recent role, number of roles listed).
-
-If the resume already exists, skip this step and say so.
+Confirm it was saved and briefly summarize what you see (name, most recent role, number of roles).
 
 ### Step 2: Preferences
 
-If `~/.proficiently/preferences.md` doesn't exist or contains only template/placeholder content:
+Ask the user in one natural question:
 
-Ask the user about their job search preferences:
+> "What kind of jobs are you looking for? Tell me about target roles, location preferences, salary expectations, and anything you'd want to filter out."
 
-1. **Target roles** - What job titles are you looking for? (e.g., VP Marketing, Director of Growth, Head of Product)
-2. **Location** - Where are you willing to work? (Remote, specific cities, hybrid preferences)
-3. **Salary** - What's your minimum total compensation? (base, bonus, equity expectations)
-4. **Must-haves** - Any non-negotiable requirements? (company stage, industry, team size, etc.)
-5. **Dealbreakers** - What should we always filter out? (agencies, crypto, travel requirements, specific industries, etc.)
-
-Save to `~/.proficiently/preferences.md` in this format:
+From their response, save `~/.proficiently/preferences.md`:
 
 ```markdown
 # Job Preferences
 
 ## Target Roles
-- [role 1]
-- [role 2]
+- [parsed from response]
 
 ## Location
-[location preferences]
+[parsed from response]
 
 ## Compensation
-- Minimum base: $[X]
-- Target total comp: $[X]
-- Notes: [equity preferences, etc.]
+[parsed from response]
 
 ## Must-Haves
-- [requirement 1]
-- [requirement 2]
+- [parsed from response]
 
 ## Dealbreakers
-- [dealbreaker 1]
-- [dealbreaker 2]
+- [parsed from response]
 
 ## Nice-to-Haves
-- [preference 1]
-- [preference 2]
+- [parsed from response]
 ```
 
-If preferences already exist, skip this step and say so.
+If they leave something out, that's fine — save what you have. They can always update later.
 
 ### Step 3: Work History Interview
 
-If `~/.proficiently/profile.md` doesn't exist or contains only template/placeholder content:
+Have a conversational interview to build a work history profile. Go through each role on the resume, most recent first. For each role, ask:
 
-Conduct a thorough, conversational interview to build a comprehensive work history profile. Reference `scripts/interview.md` for the full interview framework.
+1. "Tell me about [Company] — what did they do, and what was your role really about?"
+2. "What were your biggest accomplishments? Let's get specific with numbers if you have them."
+3. "Anything else — challenges, team building, why you moved on?"
 
-**Interview approach:**
+**Keep it conversational.** Follow up when answers are vague ("Do you remember roughly what the numbers were?"), but don't interrogate. Spend more time on recent/impactful roles, less on older ones.
 
-Work through each role on the resume, starting with the most recent. For each role:
+After the interview, save the profile to `~/.proficiently/profile.md` using this structure:
 
-1. **Context**: "Tell me about [Company]. What did they do, what stage were they at, what was the team like when you joined?"
+```markdown
+# Work History Profile
 
-2. **Your mandate**: "What were you hired to do? What was the state of things when you arrived?"
+*Last updated: [DATE]*
 
-3. **What you built/changed**: "Walk me through the biggest things you accomplished. What did you actually do day-to-day vs. strategically?"
+## Candidate Overview
+**Name**: [Name]
+**Core expertise**: [2-3 sentences]
+**Career throughline**: [narrative arc]
 
-4. **Metrics and impact**: "Let's get specific about numbers. Revenue impact? Team size? Growth rates? User numbers? Anything you can quantify."
+---
 
-5. **How you did it**: "What was your approach? Any frameworks or methodologies? What tools or processes did you introduce?"
+## Role: [Title] at [Company]
+**Dates**: [Start - End]
+**Company context**: [what they do, stage, size]
 
-6. **Leadership**: "Who reported to you? How did you grow the team? Any cross-functional work?"
+### Key Accomplishments
+1. **[Headline]**: [Situation → Action → Result with metrics]
+2. **[Headline]**: [Situation → Action → Result with metrics]
 
-7. **Challenges**: "What was the hardest part? What didn't work? How did you adapt?"
+### Other Details
+- Team/leadership: [details]
+- Tools/methods: [details]
+- Why they left: [context]
 
-8. **Why you left**: "What prompted the move? What were you looking for next?"
+---
 
-**Interview style:**
-- Be conversational, not interrogative
-- Ask follow-up questions when answers are vague ("Can you give me a specific example?")
-- Push for metrics ("Do you remember roughly what the numbers were?")
-- Note transferable patterns across roles
-- Listen for themes (growth, leadership, turnarounds, scaling)
-- If the candidate says "I don't remember exactly," ask for ranges or approximations
-
-**After the interview:**
-
-Save the comprehensive profile to `~/.proficiently/profile.md` using the structure from the template at `assets/templates/profile.md`. This profile should contain significantly MORE detail than would ever appear on a resume - it's the raw material for tailoring.
-
-If the profile already exists, skip this step and say so.
+## Cross-Role Patterns
+**Superpower**: [what they do best]
+**Recurring themes**: [patterns across roles]
+```
 
 ### Step 4: Summary
-
-After all phases are complete, give the user a brief summary of what's set up:
 
 ```
 You're all set! Here's what we have:
 
 - Resume: [filename] in ~/.proficiently/resume/
 - Preferences: [summary of target roles and key criteria]
-- Work History Profile: [number of roles covered, completeness note]
+- Work History Profile: [number of roles covered]
 
 You're ready to use:
 - /proficiently:job-search - Find matching jobs
@@ -192,10 +159,9 @@ Add to `~/.claude/settings.json`:
 {
   "permissions": {
     "allow": [
-      "Read(~/.claude/skills/**)",
+      "Read(~/.proficiently/**)",
       "Write(~/.proficiently/**)",
-      "Edit(~/.proficiently/**)",
-      "Bash(mkdir *)"
+      "Edit(~/.proficiently/**)"
     ]
   }
 }
