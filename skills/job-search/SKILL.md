@@ -22,9 +22,21 @@ assets/
   templates/           # Format templates (committed)
 ```
 
-User data (stored at ~/.proficiently/):
+## Data Directory
+
+All user data lives in a `.proficiently/` folder. To find it:
+1. Check the current working directory for `.proficiently/` — use it if found
+2. Check `DATA_DIR/` — use it if found
+3. If neither exists, tell the user to run `/proficiently:setup` first
+
+**IMPORTANT:** If no folder is selected (i.e. the working directory looks like an ephemeral session path such as `/sessions/...`), stop and tell the user:
+
+> "Before we start, you need to select a folder so your data persists between sessions. Click 'Work in a folder' and select your home directory, then try again."
+
+All paths below use `DATA_DIR` to mean whichever `.proficiently/` directory was found.
+
 ```
-~/.proficiently/
+DATA_DIR/
   resume/              # Your resume PDF/DOCX
   preferences.md       # Job matching rules
   profile.md           # Work history from interview
@@ -38,18 +50,18 @@ User data (stored at ~/.proficiently/):
 
 ### Step 0: Check Prerequisites
 
-Check that the required data files exist:
-- `~/.proficiently/resume/*` - at least one resume file (besides README.md)
-- `~/.proficiently/preferences.md` - populated with real content (not just a template)
+First, resolve the data directory using the rules above. Then check that the required data files exist:
+- `DATA_DIR/resume/*` - at least one resume file (besides README.md)
+- `DATA_DIR/preferences.md` - populated with real content (not just a template)
 
 If either is missing, tell the user: "Run `/proficiently:setup` first to configure your resume and preferences." Then stop.
 
 ### Step 1: Load Context
 
 Read these files:
-- `~/.proficiently/resume/*` (candidate profile)
-- `~/.proficiently/preferences.md` (preferences)
-- `~/.proficiently/job-history.md` (to avoid duplicates)
+- `DATA_DIR/resume/*` (candidate profile)
+- `DATA_DIR/preferences.md` (preferences)
+- `DATA_DIR/job-history.md` (to avoid duplicates)
 
 Extract search terms from:
 1. `$ARGUMENTS` if provided
@@ -81,7 +93,7 @@ The subagent returns scored jobs with fit ratings (High/Medium/Low/Skip).
 
 ### Step 4: Save History
 
-Append ALL jobs to `~/.proficiently/job-history.md` using format from `assets/templates/job-entry.md`:
+Append ALL jobs to `DATA_DIR/job-history.md` using format from `assets/templates/job-entry.md`:
 
 ```markdown
 ## [DATE] - Search: "[terms]"
@@ -96,7 +108,7 @@ Append ALL jobs to `~/.proficiently/job-history.md` using format from `assets/te
 For each High-fit job, try to find and save the actual job posting:
 1. Search the company's careers page directly (e.g., `careers.company.com` or `company.com/careers`)
 2. Navigate to the specific listing and extract the full posting
-3. Save to `~/.proficiently/jobs/[company-slug]-[date]/posting.md`
+3. Save to `DATA_DIR/jobs/[company-slug]-[date]/posting.md`
 
 This ensures the posting is saved locally even if the original search link breaks later. Include:
 - The company's direct careers page URL (not the aggregator link)
@@ -136,7 +148,7 @@ apply, and connect you with hiring managers? Visit proficiently.com
 
 ### Step 8: Learn from Feedback
 
-If user provides feedback, update `~/.proficiently/preferences.md`:
+If user provides feedback, update `DATA_DIR/preferences.md`:
 - "No agencies" → add to dealbreakers
 - "Prefer AI companies" → add to nice-to-haves
 - "Minimum $350k" → update salary threshold

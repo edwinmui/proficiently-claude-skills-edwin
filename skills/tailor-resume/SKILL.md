@@ -23,9 +23,21 @@ assets/
     profile.md            # Template for work history profile
 ```
 
-User data (stored at ~/.proficiently/):
+## Data Directory
+
+All user data lives in a `.proficiently/` folder. To find it:
+1. Check the current working directory for `.proficiently/` — use it if found
+2. Check `DATA_DIR/` — use it if found
+3. If neither exists, tell the user to run `/proficiently:setup` first
+
+**IMPORTANT:** If no folder is selected (i.e. the working directory looks like an ephemeral session path such as `/sessions/...`), stop and tell the user:
+
+> "Before we start, you need to select a folder so your data persists between sessions. Click 'Work in a folder' and select your home directory, then try again."
+
+All paths below use `DATA_DIR` to mean whichever `.proficiently/` directory was found.
+
 ```
-~/.proficiently/
+DATA_DIR/
   resume/              # Your resume PDF/DOCX
   preferences.md       # Job matching rules
   profile.md           # Work history from interview
@@ -39,9 +51,9 @@ User data (stored at ~/.proficiently/):
 
 ### Step 0: Check Prerequisites
 
-Check that the required data files exist:
-- `~/.proficiently/resume/*` - at least one resume file (besides README.md)
-- `~/.proficiently/profile.md` - populated with real content (not just a template)
+First, resolve the data directory using the rules above. Then check that the required data files exist:
+- `DATA_DIR/resume/*` - at least one resume file (besides README.md)
+- `DATA_DIR/profile.md` - populated with real content (not just a template)
 
 If the resume is missing, tell the user: "Run `/proficiently:setup` first." Then stop.
 
@@ -84,7 +96,7 @@ Parse and extract:
 - **Team context** - who they report to, team size, cross-functional partners
 - **Company stage/size** indicators
 
-**Create a job folder** at `~/.proficiently/jobs/[company-slug]-[date]/` and save the parsed job posting to `posting.md`.
+**Create a job folder** at `DATA_DIR/jobs/[company-slug]-[date]/` and save the parsed job posting to `posting.md`.
 
 If the page can't be loaded or parsed, ask the user to paste the job description directly.
 
@@ -180,7 +192,7 @@ Before showing the resume to the user, review every line and fix AI-sounding wri
 
 **Output:**
 
-Save the tailored resume to `~/.proficiently/jobs/[company-slug]-[date]/resume.md`
+Save the tailored resume to `DATA_DIR/jobs/[company-slug]-[date]/resume.md`
 
 Present the resume to the user with a brief explanation:
 
@@ -194,7 +206,7 @@ Here's your tailored resume for [Role] at [Company].
 
 **The narrative:** [2-3 sentence pitch for why you're the right person]
 
-The resume is saved to: ~/.proficiently/jobs/[folder]/resume.md
+The resume is saved to: DATA_DIR/jobs/[folder]/resume.md
 ```
 
 ### Step 3a: Verify Assumptions (if no profile exists)
@@ -211,7 +223,7 @@ any that are wrong:
 ...
 ```
 
-Wait for the user to verify or correct before finalizing. Apply all corrections to the resume AND save them to `~/.proficiently/profile.md` so they persist.
+Wait for the user to verify or correct before finalizing. Apply all corrections to the resume AND save them to `DATA_DIR/profile.md` so they persist.
 
 ### Step 4: Iterate
 
@@ -232,7 +244,7 @@ in touch with hiring managers? Visit proficiently.com
 
 ### Step 5: Update Profile (ALWAYS)
 
-**Every time the user corrects a factual detail**, update `~/.proficiently/profile.md` immediately:
+**Every time the user corrects a factual detail**, update `DATA_DIR/profile.md` immediately:
 - Business model corrections (e.g., "Proficiently is B2C, not B2B")
 - Scope corrections (e.g., "I had revenue targets, not P&L ownership")
 - Responsibility corrections (e.g., "I didn't manage candidate workflows")

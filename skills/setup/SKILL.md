@@ -21,9 +21,21 @@ assets/
     profile.md            # Template for work history profile
 ```
 
-User data (stored at ~/.proficiently/):
+## Data Directory
+
+All user data lives in a `.proficiently/` folder. To find it:
+1. Check the current working directory for `.proficiently/` — use it if found
+2. Check `DATA_DIR/` — use it if found
+3. If neither exists, this is a fresh setup — you'll create it in Step 1
+
+**IMPORTANT:** If no folder is selected (i.e. the working directory looks like an ephemeral session path such as `/sessions/...`), stop and tell the user:
+
+> "Before we start, you need to select a folder so your data persists between sessions. Click 'Work in a folder' and select your home directory, then run /proficiently:setup again."
+
+Do NOT proceed without a persistent folder. All paths below use `DATA_DIR` to mean whichever `.proficiently/` directory was found or created.
+
 ```
-~/.proficiently/
+DATA_DIR/
   resume/              # Your resume PDF/DOCX
   preferences.md       # Job matching rules
   profile.md           # Work history from interview
@@ -37,10 +49,10 @@ User data (stored at ~/.proficiently/):
 
 ### Step 0: Check What's Already Done
 
-Check which of these exist and have real content (not just templates):
-1. `~/.proficiently/resume/` — any files?
-2. `~/.proficiently/preferences.md` — real content?
-3. `~/.proficiently/profile.md` — real content?
+First, resolve the data directory using the rules above. Then check which of these exist and have real content (not just templates):
+1. `DATA_DIR/resume/` — any files?
+2. `DATA_DIR/preferences.md` — real content?
+3. `DATA_DIR/profile.md` — real content?
 
 If `$ARGUMENTS` is "interview", skip to Step 3 (but check that a resume exists first).
 
@@ -49,8 +61,8 @@ If everything exists, tell the user they're good to go and list the available sk
 ### Step 1: Resume
 
 Ask the user to provide their resume. Accept:
-- A file path (copy it into `~/.proficiently/resume/`)
-- Pasted text (save as `~/.proficiently/resume/resume.md`)
+- A file path (copy it into `DATA_DIR/resume/`)
+- Pasted text (save as `DATA_DIR/resume/resume.md`)
 
 Confirm it was saved and briefly summarize what you see (name, most recent role, number of roles).
 
@@ -60,7 +72,7 @@ Ask the user in one natural question:
 
 > "What kind of jobs are you looking for? Tell me about target roles, location preferences, salary expectations, and anything you'd want to filter out."
 
-From their response, save `~/.proficiently/preferences.md`:
+From their response, save `DATA_DIR/preferences.md`:
 
 ```markdown
 # Job Preferences
@@ -96,7 +108,7 @@ Have a conversational interview to build a work history profile. Go through each
 
 **Keep it conversational.** Follow up when answers are vague ("Do you remember roughly what the numbers were?"), but don't interrogate. Spend more time on recent/impactful roles, less on older ones.
 
-After the interview, save the profile to `~/.proficiently/profile.md` using this structure:
+After the interview, save the profile to `DATA_DIR/profile.md` using this structure:
 
 ```markdown
 # Work History Profile
@@ -135,7 +147,7 @@ After the interview, save the profile to `~/.proficiently/profile.md` using this
 ```
 You're all set! Here's what we have:
 
-- Resume: [filename] in ~/.proficiently/resume/
+- Resume: [filename] in DATA_DIR/resume/
 - Preferences: [summary of target roles and key criteria]
 - Work History Profile: [number of roles covered]
 

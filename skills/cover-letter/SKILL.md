@@ -21,9 +21,21 @@ scripts/
   write-cover-letter.md       # Cover letter writing agent prompt
 ```
 
-User data (stored at ~/.proficiently/):
+## Data Directory
+
+All user data lives in a `.proficiently/` folder. To find it:
+1. Check the current working directory for `.proficiently/` — use it if found
+2. Check `DATA_DIR/` — use it if found
+3. If neither exists, tell the user to run `/proficiently:setup` first
+
+**IMPORTANT:** If no folder is selected (i.e. the working directory looks like an ephemeral session path such as `/sessions/...`), stop and tell the user:
+
+> "Before we start, you need to select a folder so your data persists between sessions. Click 'Work in a folder' and select your home directory, then try again."
+
+All paths below use `DATA_DIR` to mean whichever `.proficiently/` directory was found.
+
 ```
-~/.proficiently/
+DATA_DIR/
   resume/              # Your resume PDF/DOCX
   preferences.md       # Job matching rules
   profile.md           # Work history from interview
@@ -37,23 +49,23 @@ User data (stored at ~/.proficiently/):
 
 ### Step 0: Check Prerequisites
 
-Check that the required data files exist:
-- `~/.proficiently/resume/*` - at least one resume file (besides README.md)
+First, resolve the data directory using the rules above. Then check that the required data files exist:
+- `DATA_DIR/resume/*` - at least one resume file (besides README.md)
 
 If the resume is missing, tell the user: "Run `/proficiently:setup` first." Then stop.
 
-Check `~/.proficiently/profile.md` - if missing or just a template, warn that the cover letter will be based only on the resume (recommend running `/proficiently:setup interview` first for better results), but proceed.
+Check `DATA_DIR/profile.md` - if missing or just a template, warn that the cover letter will be based only on the resume (recommend running `/proficiently:setup interview` first for better results), but proceed.
 
 ### Step 1: Get Job Details
 
 **If `$ARGUMENTS` is "last" or empty:**
-- Check `~/.proficiently/jobs/` for the most recently modified folder
+- Check `DATA_DIR/jobs/` for the most recently modified folder
 - If found, read `posting.md` and `resume.md` from that folder
 - Confirm with the user which job this is for
 - If no job folders exist, ask the user for a job URL
 
 **If `$ARGUMENTS` is a URL:**
-- Check if a job folder already exists for this company in `~/.proficiently/jobs/`
+- Check if a job folder already exists for this company in `DATA_DIR/jobs/`
 - If yes, read the existing `posting.md` and `resume.md`
 - If no, use Claude in Chrome MCP tools to fetch the job posting:
   ```
@@ -62,7 +74,7 @@ Check `~/.proficiently/profile.md` - if missing or just a template, warn that th
   3. navigate -> job URL
   4. get_page_text -> extract full job posting
   ```
-- Save the posting to `~/.proficiently/jobs/[company-slug]-[date]/posting.md` if not already saved
+- Save the posting to `DATA_DIR/jobs/[company-slug]-[date]/posting.md` if not already saved
 
 If the page can't be loaded, ask the user to paste the job description directly.
 
@@ -92,7 +104,7 @@ The cover letter must:
 
 ### Step 4: Present and Save
 
-Save to `~/.proficiently/jobs/[company-slug]-[date]/cover-letter.md`
+Save to `DATA_DIR/jobs/[company-slug]-[date]/cover-letter.md`
 
 Present the cover letter to the user with:
 - The full text
