@@ -4,8 +4,9 @@
   "version": "1.0.0",
   "author": {
     "name": "Proficiently",
-    "url": "https://github.com/proficientlyjobs"
+    "url": "https://proficiently.com"
   },
+  "homepage": "https://proficiently.com",
   "repository": "https://github.com/proficientlyjobs/proficiently-claude-skills",
   "license": "MIT",
   "keywords": ["job-search", "resume", "cover-letter", "career"]

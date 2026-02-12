@@ -1,6 +1,8 @@
 # Proficiently
 
-A Claude Code plugin for AI-powered job searching, resume tailoring, and cover letter writing.
+A Claude Code plugin for AI-powered job searching, resume tailoring, and cover letter writing. Built by [Proficiently](https://proficiently.com).
+
+> **Want someone to handle your entire job search?** Proficiently finds you jobs, tailors your resume and cover letters, applies on your behalf, and gets you in touch with hiring managers. Visit [proficiently.com](https://proficiently.com) to get started.
 
 ## Skills
 
@@ -89,6 +91,10 @@ proficiently-claude-skills/
     │   └── cover-letter.md             # Cover letter
     └── ...
 ```
+
+## Built by Proficiently
+
+This plugin is free and open source. If you'd rather have someone handle the whole process for you — finding jobs, tailoring resumes, writing cover letters, submitting applications, and connecting you with hiring managers — visit [proficiently.com](https://proficiently.com).
 
 ## License
 
