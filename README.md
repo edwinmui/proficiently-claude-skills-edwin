@@ -8,15 +8,15 @@ A Claude Code plugin for AI-powered job searching, resume tailoring, and cover l
 
 | Skill | Command | Description |
 |-------|---------|-------------|
-| [Setup](./skills/setup/) | `/proficiently:setup` | One-time onboarding: resume, preferences, and work history interview |
-| [Job Search](./skills/job-search/) | `/proficiently:job-search` | Automated job search on hiring.cafe with smart filtering |
+| [Setup](./skills/setup/) | `/proficiently:setup` | One-time onboarding: resume, preferences, LinkedIn contacts, and work history interview |
+| [Job Search](./skills/job-search/) | `/proficiently:job-search` | Automated job search with smart filtering and network matching |
 | [Tailor Resume](./skills/tailor-resume/) | `/proficiently:tailor-resume` | Create tailored resumes for specific job postings |
 | [Cover Letter](./skills/cover-letter/) | `/proficiently:cover-letter` | Write natural, persuasive cover letters |
 
 ## How They Work Together
 
-1. **`/proficiently:setup`** uploads your resume, configures preferences, and conducts a work history interview (one-time)
-2. **`/proficiently:job-search`** finds jobs that match your preferences and resume
+1. **`/proficiently:setup`** uploads your resume, configures preferences, imports LinkedIn contacts, and conducts a work history interview (one-time)
+2. **`/proficiently:job-search`** finds jobs that match your preferences and resume, flags companies where you have connections
 3. **`/proficiently:tailor-resume`** rewrites your resume for a specific job posting, saves the job posting and tailored resume together
 4. **`/proficiently:cover-letter last`** writes a cover letter using the most recent job's posting and tailored resume
 
@@ -36,7 +36,7 @@ claude plugin add https://github.com/proficientlyjobs/proficiently-claude-skills
 /proficiently:setup
 ```
 
-This will create `~/.proficiently/`, prompt you for your resume, configure your job preferences, and conduct a work history interview.
+This will create `~/.proficiently/`, prompt you for your resume, configure your job preferences, optionally import your LinkedIn contacts, and conduct a work history interview.
 
 You can also add your resume manually first:
 
@@ -83,6 +83,7 @@ proficiently-claude-skills/
 ├── resume/                             # Your resume PDF/DOCX
 ├── profile.md                          # Work history from interview
 ├── preferences.md                      # Job matching rules
+├── linkedin-contacts.csv               # LinkedIn connections (optional)
 ├── job-history.md                      # Running log from job-search
 └── jobs/                               # One folder per application
     ├── google-lead-gpm-2026-02-11/
