@@ -39,6 +39,7 @@ DATA_DIR/
   resume/              # Your resume PDF/DOCX
   preferences.md       # Job matching rules
   profile.md           # Work history from interview
+  linkedin-contacts.csv # LinkedIn connections (optional)
   jobs/                # Per-job application folders
   job-history.md       # Running log from job-search
 ```
@@ -52,7 +53,8 @@ DATA_DIR/
 First, resolve the data directory using the rules above. Then check which of these exist and have real content (not just templates):
 1. `DATA_DIR/resume/` — any files?
 2. `DATA_DIR/preferences.md` — real content?
-3. `DATA_DIR/profile.md` — real content?
+3. `DATA_DIR/linkedin-contacts.csv` — exists?
+4. `DATA_DIR/profile.md` — real content?
 
 If `$ARGUMENTS` is "interview", skip to Step 3 (but check that a resume exists first).
 
@@ -98,7 +100,26 @@ From their response, save `DATA_DIR/preferences.md`:
 
 If they leave something out, that's fine — save what you have. They can always update later.
 
-### Step 3: Work History Interview
+### Step 3: LinkedIn Contacts (optional)
+
+If `DATA_DIR/linkedin-contacts.csv` doesn't exist, ask:
+
+> "Want to import your LinkedIn contacts? This lets us flag when you know someone at a company that's hiring. You can skip this and add them later."
+
+If they want to proceed, give these instructions:
+
+> **How to export your LinkedIn connections:**
+> 1. Go to linkedin.com/mypreferences/d/download-my-data
+> 2. Select "Connections" and request the download
+> 3. LinkedIn will email you a link (usually within minutes)
+> 4. Download the ZIP and find `Connections.csv` inside
+> 5. Upload or paste the path to that file here
+
+Save the file as `DATA_DIR/linkedin-contacts.csv`.
+
+Confirm it was saved and tell them how many contacts were imported. If they skip, move on — this is optional.
+
+### Step 4: Work History Interview
 
 Have a conversational interview to build a work history profile. Go through each role on the resume, most recent first. For each role, ask:
 
@@ -142,13 +163,14 @@ After the interview, save the profile to `DATA_DIR/profile.md` using this struct
 **Recurring themes**: [patterns across roles]
 ```
 
-### Step 4: Summary
+### Step 5: Summary
 
 ```
 You're all set! Here's what we have:
 
 - Resume: [filename] in DATA_DIR/resume/
 - Preferences: [summary of target roles and key criteria]
+- LinkedIn Contacts: [number] imported (or "skipped")
 - Work History Profile: [number of roles covered]
 
 You're ready to use:

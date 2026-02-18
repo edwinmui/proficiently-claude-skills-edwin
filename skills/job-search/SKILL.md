@@ -40,6 +40,7 @@ DATA_DIR/
   resume/              # Your resume PDF/DOCX
   preferences.md       # Job matching rules
   profile.md           # Work history from interview
+  linkedin-contacts.csv # LinkedIn connections (optional)
   jobs/                # Per-job application folders
   job-history.md       # Running log from job-search
 ```
@@ -62,6 +63,7 @@ Read these files:
 - `DATA_DIR/resume/*` (candidate profile)
 - `DATA_DIR/preferences.md` (preferences)
 - `DATA_DIR/job-history.md` (to avoid duplicates)
+- `DATA_DIR/linkedin-contacts.csv` (if it exists — for network matching)
 
 Extract search terms from:
 1. `$ARGUMENTS` if provided
@@ -116,7 +118,9 @@ If you can't resolve the direct link for a job, note the company name so the use
 
 ### Step 6: Present Results
 
-Show only NEW High/Medium fits not in previous history:
+Show only NEW High/Medium fits not in previous history.
+
+If LinkedIn contacts were loaded, cross-reference each result's company name against the "Company" column in the CSV. Use fuzzy matching (e.g. "Google" matches "Google LLC", "Alphabet/Google"). If there's a match, include the contact's name and title.
 
 ```markdown
 ## Top Matches for [DATE]
@@ -126,8 +130,11 @@ Show only NEW High/Medium fits not in previous history:
 - **Salary**: $XXXk
 - **Location**: Remote
 - **Why**: [reason]
+- **Network**: You know [First Last] ([Position]) at [Company]
 - **Apply**: [direct employer URL]
 ```
+
+Omit the "Network" line if there are no contacts at that company.
 
 ### Step 7: Next Steps
 
